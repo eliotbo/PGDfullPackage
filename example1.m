@@ -7,7 +7,7 @@
 
 %function example1()
 
-clc;clear;
+clc;clear;%%
 
 %add subfolders as paths
 currentFolderContents = dir(pwd);     
