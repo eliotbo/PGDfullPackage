@@ -9,7 +9,7 @@
 %data: data generated from rho and A with multinomial or poisson noise 
 %entovs: (optional) entropy of measurement matrix overlap
 
-function [rho, A, data] = generateDataset(param)
+function [rho, A, data] = generateDatasetAndMeas(param)
 
 d = param.d;
 purity = param.purity;
@@ -36,7 +36,7 @@ rho = makeRandomDensityMatrix(lambi);
 [A] = makeQubitILLMUB(log2(d),theta); 
 
 
-lculate exact probabilities
+% calculate exact probabilities
 temp0 = (conj(A).*((A)*rho));
 dataExact = real(sum(temp0,2))*counts;
 
