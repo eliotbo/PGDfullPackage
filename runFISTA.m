@@ -9,7 +9,7 @@
 
 function  [rhoFISTA, timeFISTA, costFunction]=runFISTA(data,A,r)
 tic
-
+% disp('FISTA')
 sA = size(A);
 d = sA(2);
 N = sA(1);
@@ -43,7 +43,7 @@ k=0;
 tic
 while stoppingCondition == 0
     k=k+1;
-    
+%     disp(['iteration: ' num2str(k)])
     y = guess_rho+(k-2)/(k+1)*(guess_rho-past_guess_rho);
     past_guess_rho = guess_rho;
     temp = conj(A).*((A)*y);
@@ -57,13 +57,16 @@ while stoppingCondition == 0
     guess_rho = y - gamAcc*gradient;
     [guess_rho] = simplexProj(guess_rho);
 
-    if k>100 && costFunction(end)<1.3 && mean(abs(diff(costFunction(end-50:end))))<1e-5, 
+    if k>100 && costFunction(end)<2 && mean(abs(diff(costFunction(end-50:end))))<1e-4, 
         stoppingCondition = 1; end
-    if k > 4000, 
+    if k > 2000, 
         stoppingCondition = 1;
-        disp('FISTA stopped at the maximum number of iterations')
+        
     end
     
+    if k==1000
+        disp('FISTA took more than 1000 iterations')
+    end
 end
 
  guess_rho  = (guess_rho - (1-pp)*eye(d)/d)/pp;

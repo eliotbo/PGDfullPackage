@@ -13,6 +13,8 @@ function  [rhoSPGD, timeSPGD, costFunction] = runSPGD(data,A,counts)
 % --------------------------------------
 % Maximum Likelihood tomography of W state
 
+% disp('PGDB')
+
 t1 = tic;
 sA = size(A);
 d = sA(2);
@@ -24,9 +26,9 @@ normalisedData = data/counts;
 
 
 % other options for grrhor
-tol = 0.1e-6;     % tolerance used in convergence criteria
+tol = 0.1e-4;     % tolerance used in convergence criteria
 rho0 = (1/n)*eye(n); % initial guess for the density matrix
-maxit = 10000; % maximum number of iterations
+maxit = 2000; % maximum number of iterations
 
 % this is the function to be minimized
 % (For this example, the function is the least squares function) 
@@ -40,8 +42,9 @@ if (flag>=0)
 %     % printing the recovered density matrix
 %     rho;
 else
-    fprintf('SPGD did not converge to the maximum likelihood state. \n');
+%     fprintf('SPGD did not converge to the maximum likelihood state. \n');
 end
+
 
 timeSPGD = toc(t1);
 costFunction  = abs(costFunction);

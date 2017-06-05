@@ -29,12 +29,12 @@ d = sA(2);
 %Specify method(s): comment/uncomment to enable/disable the method.
 j=0;legend222{1} = '';
 if exist('r','var')
-    [rhoEstimates.PGDM, timeTaken.PGDM, costs.PGDM]   = runPGDM(data,A,r);
-    [rhoEstimates.FISTA, timeTaken.FISTA, costs.FISTA] = runFISTA(data,A,r);
+      [rhoEstimates.PGDM, timeTaken.PGDM, costs.PGDM]   = runPGDM(data,A,r);
+     [rhoEstimates.FISTA, timeTaken.FISTA, costs.FISTA] = runFISTA(data,A,r);
      [rhoEstimates.SPGD, timeTaken.SPGD, costs.SPGD]   = runSPGD(data,A,r);
-     if d<50, [rhoEstimates.DIA timeTaken.DIA, costs.DIA] = runDIA(data,A,r); end
-    if d<50 && exist('cvx','file'),
-        [rhoEstimates.CVX, timeTaken.CVX] = runCVX(data,A,r);
+       if d<100, [rhoEstimates.DIA timeTaken.DIA, costs.DIA] = runDIA(data,A,r); end
+    if d<100 && exist('cvx','file'),
+         [rhoEstimates.CVX, timeTaken.CVX] = runCVX(data,A,r);
     end;
 else
     %Only PGDMfreeTrace and CVX are written to accept data without 'r'.

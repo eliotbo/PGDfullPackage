@@ -17,7 +17,7 @@ N = sA(1);
 %maximum number of iterations
 maxit = 5000;
 %Preicision for the exit criterion
-exitPrecision = 1e-5;
+exitPrecision = 0.75e-4;
 
 data2 = data;
 
@@ -86,9 +86,13 @@ while condition==0
     
     %exit criterion depends on the mean gradient of the cost function for
     %the last 20 iterations
-    if costFunction(it) < 1 && mean(abs(diff(costFunction(end-20:end))))...
+    if it >40 && costFunction(it) < 2 && mean(abs(diff(costFunction(end-20:end))))...
             <exitPrecision,condition=1; end
     if it>maxit,condition=1; end
+    
+    if it==1000
+        disp('DIA took more than 1000 iterations')
+    end
 end
 
 costFunction = abs(costFunction);

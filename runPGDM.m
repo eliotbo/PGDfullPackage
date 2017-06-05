@@ -11,6 +11,7 @@
 %rhoPGDM: maximum likelihood density matrix
 
 function [rhoPGDM, timePGDM, costFunction] = runPGDM(data,A,r)
+% disp('PGDM')
 initialTic = tic;
 
 sA = size(A);
@@ -23,8 +24,9 @@ pDataFake = data*pp + (1-pp)*ones(length(data),1)*r/d;
 data = pDataFake;
 
 %initial hyperparameters
-alpha = 0.99;
-gam = 1/d/r/5;
+alpha = 0.95;
+gam = 1/d/r/1;
+% gam = .1/d^2;
 
 %initial guessis identity
 rhok = eye(d)/d;
@@ -37,7 +39,7 @@ orderMagnitudeCost = 1e100;
 quit = 0;
 while quit == 0
     it=it+1;
-    
+%     disp(['iteration: ' num2str(it)])
     %projection on the simplex
     [rhok] = simplexProj(rhok);
     
@@ -67,16 +69,22 @@ while quit == 0
     rhok = rhok + vr;
     
     %exit criterion
-    if it>100 && costFunction(end)<1.2 && mean(abs(diff(costFunction(end-20:end))))<1e-6,
+    if it>100 && costFunction(end)<2 && mean(abs(diff(costFunction(end-20:end))))<1e-4,
         quit=1; end
-    if it > 5000, quit = 1; end
+    if it > 2000, quit = 1; end
     
     %detect numerical instabilities
     if costFunction(it)*1E-2 > costFunction(1)
         rhok = eye(d)/d; disp('Numerical instability with PGDM');
         costFunction=[]; costFunction=0; break;
     end
+    
+    if it==1000
+        disp('PGDM took more than 1000 iterations')
+    end
 end
+
+
 
 %high-purity trick finish
 rhok  = (rhok - (1-pp)*eye(d)/d)/pp;

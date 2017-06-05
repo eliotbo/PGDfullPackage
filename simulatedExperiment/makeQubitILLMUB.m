@@ -11,6 +11,7 @@ function [A entropy] = makeQubitILLMUB(n,theta)
 % for theta = THETA
 % qq=qq+1;
     
+
 d=2^n;
 [M] = permn([1 2 3 4 5 6], n);
 ss = size(M);
@@ -18,12 +19,12 @@ ss = size(M);
 lama = exp(1i*2*pi/3);
 theta2 = theta+pi;
 
- W = [1	  0;
+ W = ( [1	  0;
      0 1;
      cos(theta/2)  sin(theta/2);
      sin(theta/2) -cos(theta/2) ;
      1*cos(theta/2)  1i*sin(theta/2)
-      1*sin(theta/2)  -1i*cos(theta/2)];
+      1*sin(theta/2)  -1i*cos(theta/2)]);
  
 sW = size(W);
 for i=1:sW(1)
@@ -40,13 +41,13 @@ for i=1:sizeW(1)
 end
 
 sizeM = size(M);
-A = zeros(sizeM(1),2^n);
+A = (zeros(sizeM(1),2^n));
 
 for i=1:ss(1)
     pos = M(i,:);
     m=1;
     for ii=1:n
-        m=kron(m,s{pos(ii)});
+        m=(kron(m,s{pos(ii)}));
     end
     v = m;
     A(i,:) = v;

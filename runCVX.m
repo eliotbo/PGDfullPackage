@@ -26,7 +26,7 @@ for i=1:N, if data(i)==0, dataContainsZeros=1; end; end
 
 tic
 
-cvx_begin quiet
+cvx_begin %quiet
     cvx_solver sdpt3
     cvx_precision low
     variable rho_estimate(d,d) complex semidefinite
@@ -40,7 +40,7 @@ cvx_begin quiet
     end
     
     %calculate estimated detector clicks
-    temp1 = conj(A).*((A)*rho_estimate);
+    temp1 = conj(A).*((A)*(rho_estimate));
     Ax = sum(temp1,2)*r;
 
     %%%% if the density matrix is known to be quasi pure %%%%%%

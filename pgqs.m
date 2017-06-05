@@ -43,7 +43,9 @@ fmem = 1e+10*ones(M,1);
 it=0;% main loop
 while ~done
 % for iterations=1:4000
+
     it = it+1;
+%     disp(['iteration: ' num2str(it)])
     if (iter>=1) 
         g0 = g;
     end
@@ -92,7 +94,7 @@ while ~done
           flag=2;
           continue
 	else
-	  fprintf('gtd: %f, normD: %f , mu: %f, normg: %f \n', gtd, normD, mu, normg);
+% 	  fprintf('gtd: %f, normD: %f , mu: %f, normg: %f \n', gtd, normD, mu, normg);
 	  done=1;
 	  flag=-3;
 % 	  break;
@@ -118,9 +120,15 @@ while ~done
         if t<1e-8
             done=1;
             flag=-2;
-	    fprintf('gtd: %f, normD: %f normg: %f mu: %f \n', gtd, normD, normg,mu)
+% 	    fprintf('gtd: %f, normD: %f normg: %f mu: %f \n', gtd, normD, normg,mu)
             break
         end
+        
+    if it>100 && costfunction(end)<2 && mean(abs(diff(costfunction(end-20:end))))<1e-4,
+        done=1; 
+        disp('new exit')
+    end
+        
         
         rhon = rho + t*D;
         fn = feval(fun,rhon);
@@ -155,8 +163,9 @@ while ~done
 %      if costfunction(it)<0.4, done = 1; flag=2; end
     
 %       figure(222);semilogy(abs(costfunction),'cyan');hold on;drawnow
-      
 
-
+if it==1000
+    disp('PGDB took more than 1000 iterations')
+end
 end
 
