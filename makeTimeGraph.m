@@ -39,7 +39,7 @@ for d=D
     a=0;
     for reps = 1:repeat
         a=a+1;
-        [fid,timeTaken] = example3(param,A);
+        [fid,timeTaken] = timeGraphTomo(param,A);
         
         fields = fieldnames(timeTaken);
         for i = 1:numel(fields)
