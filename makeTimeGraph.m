@@ -2,12 +2,6 @@
 
 clc;clear;
 
-if ~ismac && ~ispc
-    cd cvx_linux
-    cvx_setup
-    cd ..
-end
-
 %add subfolders as paths
 currentFolderContents = dir(pwd);
 currentFolderContents (~[currentFolderContents.isdir]) = [];
@@ -30,10 +24,7 @@ for d=D
     param.theta = 90*pi/180;       %only used if d=2^n (many qubits).
 
     [A] = makeQubitILLMUB(log2(param.d ),param.theta);
-    whos('A')
-    if ispc
-        memory
-    end
+
     k=k+1;
     repeat = REPEAT(k);
     a=0;
@@ -51,8 +42,9 @@ for d=D
     disp(fields)
     meanFid = 1-mean(FID,2)
     meanTime = mean(TIMETAKEN,2)
-    stdFid = std(FID')'
-    stdTime = std(TIMETAKEN')'
+%     stdFid = std(FID')'
+%     stdTime = std(TIMETAKEN')'
     
     save(['ResultT_d=' num2str(d) '_reps=' num2str(repeat) '_rand' num2str(round(rand(1)*10000000))],'FID','TIMETAKEN','fields')
 end
+
