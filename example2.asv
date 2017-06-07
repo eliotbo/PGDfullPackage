@@ -2,6 +2,8 @@
 %Here, the measurement matrix A forms a POVM, and we can calculate the 
 %multiplicative factor 'r' that turns probabilities into estimated 
 %detector clicks. If 'r' is unknown, uncomment runPGDMfreeTrace(data,A).
+%This example can be used by an experimentalist who wants to run the PGD
+%algorithms 
 
 % function rhoEstimates = example2()
 
