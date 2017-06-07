@@ -6,6 +6,14 @@
 % function rhoEstimates = example2()
 
 clc;
+
+%add subfolders as paths
+currentFolderContents = dir(pwd);     
+currentFolderContents (~[currentFolderContents.isdir]) = [];
+for i = 3:length(currentFolderContents)           
+   addpath(['./' currentFolderContents(i).name]) ;
+end
+
 %load dummy density matrix
 load('rho')
 %Measurement matrix: rows correspond to rank-1 normalised projectors
