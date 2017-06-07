@@ -16,42 +16,36 @@ for i = 3:length(currentFolderContents)
    addpath(['./' currentFolderContents(i).name]) ;
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Change parameters at will! 
+%%%%%%%%%%%%%%%%%%%%%  simulation parameters  %%%%%%%%%%%%%%%%%%%%%%%
+param.d =8;                   %dimensionality of the density matrix
+param.purity = 0.5;            %purity of the density matrix
+param.counts = param.d*1E5;    %this is the multication factor r
+r = param.counts;              
+param.theta =60*pi/180;
 %Notes: 
 %1) Unit purity states render PGD algorithms unstable, but a trick can be
 %performed inside to bypass the unstabilities (see runPGDM.m)
 %2) The total number of detector clicks is N*param.counts/param.d, where N
 %is the total number of outcomes (or projections in A)
-%3) Try special systems and measurement matrices by setting d=25, 50 or 125
-%3-b) if d=125, CVX 
-%4-a) The modified SIC-POVM for qubits is generated if d=2^n.
-%4-b) Theta is the angle between the project |0> and any of the three others 
-%(see Figure 1 in the paper). We used theta = 60 degrees in the paper
-param.d =8;                   %dimensionality of the density matrix
-param.purity = 0.5;             %purity of the density matrix
-param.counts = param.d*1E4;     %multication factor r
-param.theta =25*pi/180;       %only used if d=2^n (many qubits). 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%3) Theta is the angle between the project |0> and any of the three others
+%in the Bloch sphere
+%%%%%%%%%%%%%%%%%%%%%  simulation parameters  %%%%%%%%%%%%%%%%%%%%%%%%
 
+%The density matrix rho has a fixed purity but is generated randomly 
+%the data is computer generated with Poissonian noise
 [rho, A, data] = generateDatasetAndMeas(param);
-
-param2 = param;param2.d = 2;
-[rhoDummy, A1, dataDummy] = generateDatasetAndMeas(param2);
-entropy = entropyMeasurements(A1)/qubitMUBentropy(1);
 
 figure(222);semilogy(1,1);hold off
 
-r = param.counts; %add as third input to fullTomography if known
+%call main function to process the simulated data with PGDM, FISTA, PGDB
+%and DIA. CVX runs only if it is installed on the used machine
+[rhoEstimates, timeTaken, costs] = fullTomography(data,A,r); 
 
-%%%%%% if you have data of your own, the following lines are useful %%%%%%%
-[rhoEstimates, timeTaken, costs] = fullTomography(data,A,r); %note that 'r' is optional here.
-
-% close all
 figure(222); 
 %calculate fidelities and plot log likelihoods as a function of iteration
 fields = fieldnames(rhoEstimates);
-for i = 1:numel(fields)
+sizeFields = numel(fields);
+for i = 1:sizeFields
   fid.(fields{i}) = fidelityRho(rho,rhoEstimates.(fields{i}));
   if ~strcmp(fields{i},'CVX')
       legend222{i} = fields{i};
@@ -66,7 +60,6 @@ for i = 1:numel(fields)
 end
 legend(legend222)
 grid on
-title(['entropy is ' num2str(entropy)])
 
 disp(' ')
 disp('The time taken by each method in seconds is')
@@ -74,6 +67,3 @@ disp(timeTaken)
 disp('The fidelity between the actual state ''rho'' and the maximum likelihood state ''rhoEstimate'' is:')
 disp(fid)
 
-if exist('entropyA')
-    disp(['The normalised measurement matrix overlap entropy is ' num2str(entropyA)])
-end

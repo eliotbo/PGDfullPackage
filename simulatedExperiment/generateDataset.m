@@ -7,14 +7,13 @@
 %rho: randomly generated density matrix
 %A: measurement matrix (see options below)
 %data: data generated from rho and A with multinomial or poisson noise 
-%entovs: (optional) entropy of measurement matrix overlap
+
 
 function [rho, data] = generateDataset(param,A)
 
 d = param.d;
 purity = param.purity;
 counts = param.counts;
-theta = param.theta;
 
 x = 1:d; %eigenvalue index
 lambda=0;
@@ -51,5 +50,5 @@ end
 %merit. Uncomment to see the value
 % log_L_GP = sum( ((dataExact-data)./sqrt(dataExact+eps))  .^2)/length(data)
 
-if ~exist('entovs'), entovs=0; end
+
 

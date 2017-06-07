@@ -90,9 +90,6 @@ while condition==0
             <exitPrecision,condition=1; end
     if it>maxit,condition=1; end
     
-    if it==1000
-        disp('DIA took more than 1000 iterations')
-    end
 end
 
 costFunction = abs(costFunction);

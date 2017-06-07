@@ -19,7 +19,7 @@ if sD(1)~=sA(1), error(['Number of measurements is not equal to number'...
         ' of outcomes. Should the measurement matrix and/or data vector'...
         ' be transposed?']); 
 end
-if sA(1)<sA(2)*3/2 && sA(1)>sA(2)*2/3, 
+if sA(1)<sA(2)*3/2 && sA(1)>sA(2)*2/3
     error('Measurement matrix must be made of kets'); 
 end
 
@@ -27,22 +27,21 @@ end
 d = sA(2);
 
 %Specify method(s): comment/uncomment to enable/disable the method.
-j=0;legend222{1} = '';
 if exist('r','var')
       [rhoEstimates.PGDM, timeTaken.PGDM, costs.PGDM]   = runPGDM(data,A,r);
      [rhoEstimates.FISTA, timeTaken.FISTA, costs.FISTA] = runFISTA(data,A,r);
-     [rhoEstimates.SPGD, timeTaken.SPGD, costs.SPGD]   = runSPGD(data,A,r);
-       if d<100, [rhoEstimates.DIA timeTaken.DIA, costs.DIA] = runDIA(data,A,r); end
-    if d<100 && exist('cvx','file'),
+     [rhoEstimates.PGDB, timeTaken.PGDB, costs.PGDB]   = runPGDB(data,A,r);
+       if d<100, [rhoEstimates.DIA, timeTaken.DIA, costs.DIA] = runDIA(data,A,r); end
+    if d<100 && exist('cvx','file')
          [rhoEstimates.CVX, timeTaken.CVX] = runCVX(data,A,r);
-    end;
+    end
 else
     %Only PGDMfreeTrace and CVX are written to accept data without 'r'.
     [rhoEstimates.PGDMfreeTrace, timeTaken.PGDMfreeTrace,...
         costs.PGDMfreeTrace] = runPGDMfreeTrace(data,A);
-    if d<50 && exist('cvx','file'),
+    if d<50 && exist('cvx','file')
         [rhoEstimates.CVX, timeTaken.CVX] = runCVX(data,A);
-    end;
+    end
 end
 
 

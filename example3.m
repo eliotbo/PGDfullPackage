@@ -43,6 +43,3 @@ end
 % disp('The fidelity between the actual state ''rho'' and the maximum likelihood state ''rhoEstimate'' is:')
 % disp(fid)
 
-% if exist('entropyA')
-%     disp(['The normalised measurement matrix overlap entropy is ' num2str(entropyA)])
-% end

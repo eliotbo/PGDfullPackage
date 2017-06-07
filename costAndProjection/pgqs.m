@@ -124,7 +124,7 @@ while ~done
             break
         end
         
-    if it>100 && costfunction(end)<2 && mean(abs(diff(costfunction(end-20:end))))<1e-4,
+    if it>100 && costfunction(end)<2 && mean(abs(diff(costfunction(end-20:end))))<1e-4
         done=1; 
         disp('new exit')
     end
@@ -163,9 +163,5 @@ while ~done
 %      if costfunction(it)<0.4, done = 1; flag=2; end
     
 %       figure(222);semilogy(abs(costfunction),'cyan');hold on;drawnow
-
-if it==1000
-    disp('PGDB took more than 1000 iterations')
-end
 end
 

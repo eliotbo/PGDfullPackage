@@ -15,8 +15,12 @@ for i = 3:length(currentFolderContents)
     addpath(['./' currentFolderContents(i).name]) ;
 end
 
-D=[4];
-REPEAT = [ 1];
+%Choose dimensionality of the density matrix simulations
+D=[4 8];
+
+%Repeat the pseudo-experiment a number of times for each dimensionality
+REPEAT = [2 3];
+
 k=0;
 for d=D
     rng('shuffle')
@@ -35,7 +39,7 @@ for d=D
     a=0;
     for reps = 1:repeat
         a=a+1;
-        [fid,timeTaken] = example1(param,A);
+        [fid,timeTaken] = example3(param,A);
         
         fields = fieldnames(timeTaken);
         for i = 1:numel(fields)
@@ -51,5 +55,4 @@ for d=D
     stdTime = std(TIMETAKEN')'
     
     save(['ResultT_d=' num2str(d) '_reps=' num2str(repeat) '_rand' num2str(round(rand(1)*10000000))],'FID','TIMETAKEN','fields')
-    
 end

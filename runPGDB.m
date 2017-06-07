@@ -1,13 +1,16 @@
-%This function uses the SPGD for full tomography.
+%This function uses the PGDB for full tomography.
 %
 %inputs
 %data: Nx1 vector of integers corresponding to numbers of detector clicks
 %A: Nxd matrix of the measurement kets
 %counts : multiplication factor that turns probabilities into estimated clicks
 %output
-%rhoPGDM: maximum likelihood density matrix 
+%rhoPGDB: maximum likelihood density matrix 
+%timePGDB: time taken by the algorithm
+%costFunction: cost function value as a function of iteration number
 
-function  [rhoSPGD, timeSPGD, costFunction] = runSPGD(data,A,counts)
+
+function  [rhoPGDB, timePGDB, costFunction] = runPGDB(data,A,counts)
 %
 % Example of usage of 'pgqs' routine
 % --------------------------------------
@@ -36,17 +39,17 @@ fun = @(rho) leastsquares(rho,A,normalisedData ,counts); % function handle
 [rho,flag,iter,fe,costFunction] = pgqs(fun,rho0,tol,maxit,1);
 
 if (flag>=0)
-%     fprintf('Succesfully solved with SPGD. Flag: %d, Iter: %d, nfeval: %d \n', flag, iter, fe);
+%     fprintf('Succesfully solved with PGDB. Flag: %d, Iter: %d, nfeval: %d \n', flag, iter, fe);
 %     % printing the recovered density matrix
 %     rho;
 else
-%     fprintf('SPGD did not converge to the maximum likelihood state. \n');
+%     fprintf('PGDB did not converge to the maximum likelihood state. \n');
 end
 
 
-timeSPGD = toc(t1);
+timePGDB = toc(t1);
 costFunction  = abs(costFunction);
-rhoSPGD = rho;
+rhoPGDB = rho;
 
 
 
